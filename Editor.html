@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="js/react.min.js"></script>
+    <script src="js/react-dom.min.js"></script>
+    <script src="js/babel.min.js"></script>
+    <script src="js/remarkable.min.js"></script>
+</head>
+<body>
+<div id="one"></div>
+<script type="text/babel">
+    var one = document.getElementById("one");
+
+    class Editor extends React.Component {
+        constructor() {
+            super();
+            this.state = {value: 'Type some *markdown* here!'};
+        }
+
+        change() {
+            this.setState({value: this.refs.textarea.value});
+        }
+
+        getMark() {
+            var md = new Remarkable();
+            return {__html: md.render(this.state.value)}
+        }
+        //dangerouslySetInnerHTML
+        render() {
+            return (
+                    <div>
+                        <h3>Input</h3>
+                        <textarea
+                                onChange={this.change.bind(this)}
+                                ref="textarea"
+                                defaultValue={this.state.value}
+                        />
+                        <h3>Output</h3>
+                        <div
+                                dangerouslySetInnerHTML={this.getMark()}
+                        />
+
+                    </div>
+            )
+        }
+    }
+    ReactDOM.render(<Editor />, one)
+
+
+</script>
+</body>
+</html>
